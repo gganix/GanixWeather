@@ -27,18 +27,20 @@ $(document).ready(function () {
             $('.intro-section p').text('Explore the current weather and forecasts at your location or any city in the world.');
             $('#city').attr('placeholder', 'Eg: London');
             $('#searchForm label').text('Enter the city name:');
-            $('#getLocation').text('Allow access to your location'); 
+            $('#permiso').text('Allow access to your location');
             $('#btnBuscar').text('Search Weather');
             $('#languageToggle').html('<i class="fas fa-globe"></i> Español');
+
         } else {
             $('.titulo').text('Bienvenido a Tu Weather App');
             $('.titulo-secundario').text('Buscar Clima por Ciudad');
             $('.intro-section p').text('Explora el clima actual y los pronósticos en tu ubicación o cualquier ciudad del mundo.');
             $('#city').attr('placeholder', 'Ej: Madrid');
             $('#searchForm label').text('Introduce el nombre de la ciudad:');
-            $('#getLocation').text('Permite acceso a tu ubicación');  
+            $('#permiso').text('Permite acceso a tu ubicación');
             $('#btnBuscar').text('Buscar Clima');
             $('#languageToggle').html('<i class="fas fa-globe"></i> English');
+
         }
 
         // para que cargue
@@ -50,7 +52,7 @@ $(document).ready(function () {
     $('#languageToggle').click(function (e) {
         e.preventDefault();
         cambiarIdioma();
-        $('.content').hide(); 
+        $('.content').hide();
         $('.content.active').fadeIn();
     });
 
@@ -163,26 +165,44 @@ $(document).ready(function () {
                 const sunrise = new Date(sys.sunrise * 1000).toLocaleTimeString();
                 const sunset = new Date(sys.sunset * 1000).toLocaleTimeString();
 
+                var viento;
+                var humedad;
+                var sensacion;
+
+                (idiomaActual === 'es' ? viento = 'Viento' : viento = 'Wind');
+                (idiomaActual === 'es' ? humedad = 'Humedad' : humedad = 'Humidity');
+                (idiomaActual === 'es' ? sensacion = 'Sensacion Térmica' : sensacion = 'Wind chill');
+
                 $('#weatherResult').html(`
-                    <div class="card text-white p-4 rounded-3 mx-auto" style="max-width: 350px;">
-                        <h4 class="text-center mb-3">${weather[0].description}</h4>
-                        <div class="row align-items-center mb-3">
-                            <div class="col-4 text-center">
-                                <img src="https://openweathermap.org/img/wn/${weather[0].icon}@2x.png" alt="Icono de clima" class="img-fluid" style="max-width: 100px;">
-                            </div>
-                            <div class="col-8 text-center">
-                                <h2 class="fw-bold mb-1">${main.temp}°C</h2>
-                                <p class="text-white mb-0"><i class="fa-solid fa-up-long"></i> ${main.temp_max}° <i class="fa-solid fa-down-long"></i> ${main.temp_min}°</p>
-                            </div>
+                     <div class="card text-white p-4 rounded-3 mx-auto" style="max-width: 350px;">
+                    <h4 class="text-center mb-3">${weather[0].description.toUpperCase()}</h4>
+                    <div class="row align-items-center mb-3">
+                        <div class="col-4 text-center">
+                            <img src="https://openweathermap.org/img/wn/${weather[0].icon}@2x.png" alt="Icono de clima" class="img-fluid" style="max-width: 100px;">
                         </div>
-                        <div class="row text-center">
-                            <div class="col">
-                                <p><i class="fa-solid fa-wind"></i> Wind: ${wind.speed} m/s</p>
-                                <p><i class="fa-solid fa-sun"></i> Sunrise: ${sunrise}</p>
-                                <p><i class="fa-solid fa-moon"></i> Sunset: ${sunset}</p>
-                            </div>
+                        <div class="col-8 text-center"> 
+                            <h2 class="fw-bold mb-1">${main.temp}°C</h2>
+                            <p class="text-secondary mb-0"><i class="fa-solid fa-up-long"></i> ${main.temp_max}° <i class="fa-solid fa-down-long"></i> ${main.temp_min}°</p>
                         </div>
                     </div>
+                    <div class="row text-center mb-3">
+                        <div class="col"><i class="fas fa-temperature-half"></i><p><strong>${main.feels_like}°C</strong></p><p>${sensacion}</p></div>
+                        <div class="col"><i class="fas fa-wind"></i><p><strong>${wind.speed} m/s</strong></p><p>${viento}</p></div>
+                        <div class="col"><i class="fas fa-droplet"></i><p><strong>${main.humidity}%</strong></p><p>${humedad}</p></div>
+                    </div>
+                    <p class="text-center text-warning fw-bold mb-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                class="bi bi-sunrise-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M7.646 1.146a.5.5 0 0 1 .708 0l1.5 1.5a.5.5 0 0 1-.708.708L8.5 2.707V4.5a.5.5 0 0 1-1 0V2.707l-.646.647a.5.5 0 1 1-.708-.708zM2.343 4.343a.5.5 0 0 1 .707 0l1.414 1.414a.5.5 0 0 1-.707.707L2.343 5.05a.5.5 0 0 1 0-.707m11.314 0a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0M11.709 11.5a4 4 0 1 0-7.418 0H.5a.5.5 0 0 0 0 1h15a.5.5 0 0 0 0-1h-3.79zM0 10a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2A.5.5 0 0 1 0 10m13 0a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5" />
+                            </svg> ${sunrise}&nbsp;&nbsp;
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                class="bi bi-sunset-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M7.646 4.854a.5.5 0 0 0 .708 0l1.5-1.5a.5.5 0 0 0-.708-.708l-.646.647V1.5a.5.5 0 0 0-1 0v1.793l-.646-.647a.5.5 0 1 0-.708.708zm-5.303-.51a.5.5 0 0 1 .707 0l1.414 1.413a.5.5 0 0 1-.707.707L2.343 5.05a.5.5 0 0 1 0-.707zm11.314 0a.5.5 0 0 1 0 .706l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zM11.709 11.5a4 4 0 1 0-7.418 0H.5a.5.5 0 0 0 0 1h15a.5.5 0 0 0 0-1h-3.79zM0 10a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2A.5.5 0 0 1 0 10m13 0a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5" />
+                            </svg> ${sunset}
+                        </p>
+                </div>
                 `);
             },
             error: function () {
