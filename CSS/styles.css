@@ -13,7 +13,7 @@ body {
 }
 
 .background-image {
-  background-image: url("../img/d.jpg");
+  background-image: url("https://cdn.pixabay.com/photo/2013/11/23/01/07/clouds-216201_1280.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -28,10 +28,7 @@ body {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.titulo-clima-ubicacion,
-.titulo-buscar-clima,
-.titulo-bienvenida,
-.titulo-explora {
+.titulo-secundario {
   color: #ffc107;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
