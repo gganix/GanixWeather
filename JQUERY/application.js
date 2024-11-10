@@ -29,7 +29,9 @@ $(document).ready(function () {
             $('#searchForm label').text('Enter the city name:');
             $('#permiso').text('Allow access to your location');
             $('#btnBuscar').text('Search Weather');
+            $('#getLocation').text('Search Weather');
             $('#languageToggle').html('<i class="fas fa-globe"></i> Español');
+            $('#footerTexto').text('Final Project 1 EV | Weather is sweet yeah!');
 
         } else {
             $('.titulo').text('Bienvenido a Tu Weather App');
@@ -39,8 +41,10 @@ $(document).ready(function () {
             $('#searchForm label').text('Introduce el nombre de la ciudad:');
             $('#permiso').text('Permite acceso a tu ubicación');
             $('#btnBuscar').text('Buscar Clima');
+            $('#getLocation').text('Buscar Clima');
             $('#languageToggle').html('<i class="fas fa-globe"></i> English');
-
+            $('#footerTexto').text('Proyecto Final EV 1 | Weather is sweet yeah!');
+            
         }
 
         // para que cargue
