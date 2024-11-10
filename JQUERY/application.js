@@ -182,7 +182,7 @@ $(document).ready(function () {
                         </div>
                         <div class="col-8 text-center"> 
                             <h2 class="fw-bold mb-1">${main.temp}°C</h2>
-                            <p class="text-secondary mb-0"><i class="fa-solid fa-up-long"></i> ${main.temp_max}° <i class="fa-solid fa-down-long"></i> ${main.temp_min}°</p>
+                            <p class="text-white mb-0"><i class="fa-solid fa-up-long"></i> ${main.temp_max}° <i class="fa-solid fa-down-long"></i> ${main.temp_min}°</p>
                         </div>
                     </div>
                     <div class="row text-center mb-3">
