@@ -1,6 +1,6 @@
 # 🌤 Aplicación del Clima
 
-Bienvenido a **Weather is sweet yeah**, una aplicación de una sola página (SPA) para consultar el clima actual y el pronóstico de los próximos días en cualquier ciudad o en tu ubicación actual. Desarrollada en **HTML**, **SCSS** y **jQuery** utilizando la **API de OpenWeather** para la obtención de datos meteorológicos.
+Bienvenido a **Weather is sweet yeah**, una aplicación de una sola página (SPA) para consultar el clima actual y el pronóstico de los próximos días en cualquier ciudad o en tu ubicación actual. Desarrollada en **HTML**, **SCSS** y **jQuery** utilizando la [API de OpenWeather](https://openweathermap.org/api) para la obtención de datos meteorológicos.
 
 ---
 
