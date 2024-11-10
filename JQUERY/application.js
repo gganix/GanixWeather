@@ -92,7 +92,7 @@ function ElTiempo5Dias(lat, lon) {
                 datosDia.temps.push(forecast.main.temp_min, forecast.main.temp_max); //vamos guardando todas las temperaturas del dia para luego pillar la maxima y la minima del dia
             });
 
-            dia.slice(0, 4).forEach(dayData => { //se crean las cards
+            dia.slice(1, 5).forEach(dayData => { //se crean las cards
                 cards.push(cargarCards(dayData));
             });
 
