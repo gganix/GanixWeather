@@ -1,0 +1,85 @@
+@use 'sass:color';
+
+$primary-color: #0d6efd;
+$secondary-color: #ffc107;
+$dark-color: #343a40;
+$background-image-url: "../img/d.jpg";
+$titulo: #FFFFFF; 
+
+html,
+body {
+    scrollbar-color: $primary-color color.adjust($primary-color, $lightness: 30%);
+    scrollbar-width: thin;
+}
+
+@mixin sombra($intensity: 0.15) {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, $intensity);
+}
+
+@mixin redondear($radius: 0.75rem) {
+    border-radius: $radius;
+}
+
+.lobster-font {
+    font-family: 'Lobster', cursive;
+}
+
+.open-sans-font {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.background-image {
+    background-image: url($background-image-url);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.navbar {
+    @include sombra(0.2);
+}
+
+.titulo {
+    color: $titulo;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.titulo-secundario {
+    color: $secondary-color;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.intro-section {
+    height: 100vh;
+    color: white;
+    padding: 2rem;
+
+    .shadow-text {
+        text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+    }
+}
+
+.search-section,
+.location-section {
+    max-width: 500px;
+    padding: 2rem;
+    margin-top: 2rem;
+    background-color: color.adjust($primary-color, $lightness: -10%); 
+    @include redondear();
+    @include sombra();
+
+    i {
+        color: $primary-color;
+        font-size: 1rem;
+    }
+}
+
+.card {
+    @include sombra(0.1);
+    transition: transform 0.2s ease-in-out;
+
+    &:hover {
+        transform: scale(1.05);
+        @include sombra(0.25);
+    }
+}
