@@ -1,4 +1,4 @@
-// para cambiar de secciones
+// Cambiar entre secciones y limpiar el contenido generado al cambiar
 $(document).ready(function () {
     $('.nav-link').click(function (e) {
         e.preventDefault();
@@ -7,18 +7,15 @@ $(document).ready(function () {
         $('.content').hide();
         const target = $(this).data('target');
         $(target).fadeIn();
-        $('#weatherResult').empty(); // vacia por si hay cards generadas
-        $('#weatherCards').empty();
+        $('#weatherResult').empty(); // Vacía el contenido del clima actual
+        $('#weatherCards').empty();  // Vacía el contenido de las tarjetas de pronóstico
     });
 });
 
-
+// API KEY de OpenWeather
 const apiKey = '82f9e371a8ee6adf0e59110eb8a882c2';
 
-
-//Esta es la funcion que saca la latitud y longitud a partir de un nombre de una ciudad
 function Geocoding() {
-    //pilla la ciudad del input y vemos que no este vacio
     const cityName = $('#city').val().trim();
 
     if (cityName === "") {
@@ -33,10 +30,10 @@ function Geocoding() {
         method: 'GET',
         success: function (geoResponse) {
             $('#result').text("");
-            if (geoResponse.length > 0) { //esto es porque la api puede devolver varios resultados (esta limitado a 1 pero para asegurar)
+            if (geoResponse.length > 0) {
                 const { lat, lon } = geoResponse[0];
-                ElTiempoActual(lat, lon); //genera card para el clima actual
-                ElTiempo5Dias(lat, lon); //genera 4 cards de los proximos 4 dias
+                ElTiempoActual(lat, lon);
+                ElTiempo5Dias(lat, lon);
             } else {
                 $('#result').text("No se encontró la ciudad especificada.");
             }
@@ -47,14 +44,13 @@ function Geocoding() {
     });
 }
 
-// para crear las cards
-function cargarCardClima(dayData) {
-    const minTemp = Math.min(...dayData.temps); //para pillar la temperatuda minima de un dia
-    const maxTemp = Math.max(...dayData.temps); //para la maxima
+// Crear tarjeta de pronóstico
+function renderWeatherCard(dayData) {
+    const minTemp = Math.min(...dayData.temps);
+    const maxTemp = Math.max(...dayData.temps);
     const icon = `https://openweathermap.org/img/wn/${dayData.weather.icon}@2x.png`;
     const dayOfWeek = new Date(dayData.date).toLocaleDateString('es-ES', { weekday: 'long' });
 
-    //la card con los valores dados por la api
     return `
         <div class="col-md-2">
             <div class="card text-center mb-4 bg-dark text-white">
@@ -83,22 +79,22 @@ function ElTiempo5Dias(lat, lon) {
             const dailyData = [];
             const cards = [];
 
-            weather5Response.list.forEach(clima => { //la api devuelve 40 valores ya que devuelve un clima cada 3 horas y son 5 dias, por lo que seria 8 por dia, 40
-                const day = new Date(clima.dt * 1000).toLocaleDateString();  //pillamos la fecha de mañana (ya que el dia de hoy lo hemos calculado con la otra api)
+            weather5Response.list.forEach(forecast => {
+                const day = new Date(forecast.dt * 1000).toISOString().split('T')[0];
 
-                let dayData = dailyData.find(d => d.date === day);  //vemos a en dailyData si existe un objeto con la misma fecha para evitar que se duplique el dia
-                if (!dayData) { //si no existe ese dia, se crea
-                    dayData = { date: day, temps: [], weather: clima.weather[0] };
+                let dayData = dailyData.find(d => d.date === day);
+                if (!dayData) {
+                    dayData = { date: day, temps: [], weather: forecast.weather[0] };
                     dailyData.push(dayData);
                 }
-                dayData.temps.push(clima.main.temp_min, clima.main.temp_max); //vamos guardando todas las temperaturas del dia para luego pillar la maxima y la minima del dia
+                dayData.temps.push(forecast.main.temp_min, forecast.main.temp_max);
             });
 
-            dailyData.slice(0, 5).forEach(dayData => { //se crean las cards
-                cards.push(cargarCardClima(dayData));
+            dailyData.slice(0, 5).forEach(dayData => {
+                cards.push(renderWeatherCard(dayData));
             });
 
-            $('#weatherCards').html(cards.join('')); //y se añaden aqui
+            $('#weatherCards').html(cards.join(''));
         },
         error: function () {
             $('#result').text("No se pudo obtener el pronóstico.");
@@ -165,12 +161,12 @@ $('#btnBuscar').click(function () {
 
 $('#getLocation').click(function () {
     if (navigator.geolocation) {
-        navigator.geolocation.UbicacionActual(function (position) {
+        navigator.geolocation.getCurrentPosition(function (position) {
             const { latitude, longitude } = position.coords;
             ElTiempoActual(latitude, longitude);
             ElTiempo5Dias(latitude, longitude);
         });
     } else {
-        $('#result').text("La geolocalización no es compatible con este navegador");
+        $('#result').text("La geolocalización no es compatible con este navegador.");
     }
 });
