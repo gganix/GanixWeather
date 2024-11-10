@@ -1,4 +1,4 @@
-// Cambiar entre secciones y limpiar el contenido generado al cambiar
+// para cambiar de secciones
 $(document).ready(function () {
     $('.nav-link').click(function (e) {
         e.preventDefault();
@@ -7,15 +7,16 @@ $(document).ready(function () {
         $('.content').hide();
         const target = $(this).data('target');
         $(target).fadeIn();
-        $('#weatherResult').empty(); // Vacía el contenido del clima actual
-        $('#weatherCards').empty();  // Vacía el contenido de las tarjetas de pronóstico
+        $('#weatherResult').empty(); // vacia por si hay cards generadas
+        $('#weatherCards').empty();
     });
 });
 
-// API KEY de OpenWeather
 const apiKey = '82f9e371a8ee6adf0e59110eb8a882c2';
 
+//Esta es la funcion que saca la latitud y longitud a partir de un nombre de una ciudad
 function Geocoding() {
+    //pilla la ciudad del input y vemos que no este vacio
     const cityName = $('#city').val().trim();
 
     if (cityName === "") {
@@ -30,30 +31,31 @@ function Geocoding() {
         method: 'GET',
         success: function (geoResponse) {
             $('#result').text("");
-            if (geoResponse.length > 0) {
+            if (geoResponse.length > 0) { //esto es porque la api puede devolver varios resultados (esta limitado a 1 pero para asegurar)
                 const { lat, lon } = geoResponse[0];
-                ElTiempoActual(lat, lon);
-                ElTiempo5Dias(lat, lon);
+                ElTiempoActual(lat, lon);  //genera card para el clima actual
+                ElTiempo5Dias(lat, lon); //genera las cards de los proximos dias
             } else {
-                $('#result').text("No se encontró la ciudad especificada.");
+                $('#result').text("No se encontró la ciudad especificada");
             }
         },
         error: function () {
-            $('#result').text("Hubo un error en la búsqueda. Intenta nuevamente.");
+            $('#result').text("Hubo un error con la busqueda. Intenta otra vez");
         }
     });
 }
 
-// Crear tarjeta de pronóstico
-function renderWeatherCard(dayData) {
-    const minTemp = Math.min(...dayData.temps);
-    const maxTemp = Math.max(...dayData.temps);
+// para crear las cards
+function cargarCards(dayData) {
+    const minTemp = Math.min(...dayData.temps); //para pillar la temperatuda minima de un dia
+    const maxTemp = Math.max(...dayData.temps); //para la maxima
     const icon = `https://openweathermap.org/img/wn/${dayData.weather.icon}@2x.png`;
     const dayOfWeek = new Date(dayData.date).toLocaleDateString('es-ES', { weekday: 'long' });
 
+    //la card con los valores dados por la api
     return `
         <div class="col-md-2">
-            <div class="card text-center mb-4 bg-dark text-white">
+            <div class="card text-center mb-4  text-white">
                 <div class="card-body">
                     <h5 class="card-title">${dayOfWeek}</h5>
                     <img src="${icon}" alt="${dayData.weather.description}" class="card-img-top mb-2" style="height: 50px; width: auto;">
@@ -76,25 +78,25 @@ function ElTiempo5Dias(lat, lon) {
         method: 'GET',
         success: function (weather5Response) {
             $('#result').text("");
-            const dailyData = [];
+            const dia = [];
             const cards = [];
 
-            weather5Response.list.forEach(forecast => {
-                const day = new Date(forecast.dt * 1000).toISOString().split('T')[0];
+            weather5Response.list.forEach(forecast => { //la api devuelve 40 valores ya que devuelve un clima cada 3 horas y son 5 dias, por lo que seria 8 por dia, 40
+                const day = new Date(forecast.dt * 1000).toISOString().split('T')[0]; //pillamos la fecha de mañana (ya que el dia de hoy lo hemos calculado con la otra api)
 
-                let dayData = dailyData.find(d => d.date === day);
-                if (!dayData) {
-                    dayData = { date: day, temps: [], weather: forecast.weather[0] };
-                    dailyData.push(dayData);
+                let datosDia = dia.find(d => d.date === day); //vemos si existe un objeto con la misma fecha para evitar que se duplique el dia
+                if (!datosDia) { //si no existe ese dia, se crea
+                    datosDia = { date: day, temps: [], weather: forecast.weather[0] };
+                    dia.push(datosDia);
                 }
-                dayData.temps.push(forecast.main.temp_min, forecast.main.temp_max);
+                datosDia.temps.push(forecast.main.temp_min, forecast.main.temp_max); //vamos guardando todas las temperaturas del dia para luego pillar la maxima y la minima del dia
             });
 
-            dailyData.slice(0, 5).forEach(dayData => {
-                cards.push(renderWeatherCard(dayData));
+            dia.slice(0, 4).forEach(dayData => { //se crean las cards
+                cards.push(cargarCards(dayData));
             });
 
-            $('#weatherCards').html(cards.join(''));
+            $('#weatherCards').html(cards.join('')); //y se añaden aqui
         },
         error: function () {
             $('#result').text("No se pudo obtener el pronóstico.");
@@ -111,13 +113,13 @@ function ElTiempoActual(lat, lon) {
         method: 'GET',
         success: function (weatherResponse) {
             $('#result').text("");
-            // Configuración actual del clima
+
             const { main, weather, wind, sys } = weatherResponse;
             const sunrise = new Date(sys.sunrise * 1000).toLocaleTimeString();
             const sunset = new Date(sys.sunset * 1000).toLocaleTimeString();
 
             $('#weatherResult').html(`
-                <div class="bg-dark text-white p-4 rounded-3 mx-auto" style="max-width: 350px;">
+                <div class=" card text-white p-4 rounded-3 mx-auto" style="max-width: 350px;">
                     <h4 class="text-center mb-3">${weather[0].description}</h4>
                     <div class="row align-items-center mb-3">
                         <div class="col-4 text-center">
@@ -125,7 +127,7 @@ function ElTiempoActual(lat, lon) {
                         </div>
                         <div class="col-8 text-center">
                             <h2 class="fw-bold mb-1">${main.temp}°C</h2>
-                            <p class="text-secondary mb-0"><i class="fa-solid fa-up-long"></i> ${main.temp_max}° <i class="fa-solid fa-down-long"></i> ${main.temp_min}°</p>
+                            <p class="text-white mb-0"><i class="fa-solid fa-up-long"></i> ${main.temp_max}° <i class="fa-solid fa-down-long"></i> ${main.temp_min}°</p>
                         </div>
                     </div>
                     <div class="row text-center mb-3">
@@ -154,7 +156,6 @@ function ElTiempoActual(lat, lon) {
     });
 }
 
-// Eventos
 $('#btnBuscar').click(function () {
     Geocoding();
 });

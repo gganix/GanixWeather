@@ -4,7 +4,6 @@ $primary-color: #0d6efd;
 $secondary-color: #ffc107;
 $dark-color: #343a40;
 $background-image-url: "https://cdn.pixabay.com/photo/2013/11/23/01/07/clouds-216201_1280.jpg";
-$titulo-color: #FFFFFF;
 
 html,
 body {
@@ -40,7 +39,7 @@ body {
 }
 
 .titulo {
-    color: $titulo-color;
+    color: white;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
@@ -75,6 +74,7 @@ body {
 }
 
 .card {
+    background-color: color.adjust($primary-color, $lightness: -10%);
     @include shadow(0.1);
     transition: transform 0.2s ease-in-out;
 

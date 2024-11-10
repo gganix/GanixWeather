@@ -24,7 +24,7 @@ body {
 }
 
 .titulo {
-  color: #FFFFFF;
+  color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
@@ -58,6 +58,7 @@ body {
 }
 
 .card {
+  background-color: rgb(1.762295082, 87.2336065574, 213.237704918);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
 }
