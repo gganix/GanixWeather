@@ -1,30 +1,25 @@
 @use 'sass:color';
 
-// Variables
 $primary-color: #0d6efd;
 $secondary-color: #ffc107;
 $dark-color: #343a40;
-$background-image-url: "../img/d.jpg";
-$titulo-color: #FFFFFF; // Ajuste de color para los títulos
+$background-image-url: "https://cdn.pixabay.com/photo/2013/11/23/01/07/clouds-216201_1280.jpg";
+$titulo-color: #FFFFFF;
 
-// Scrollbar styles
 html,
 body {
     scrollbar-color: $primary-color color.adjust($primary-color, $lightness: 30%);
     scrollbar-width: thin;
 }
 
-// Mixin for shadow effects
 @mixin shadow($intensity: 0.15) {
     box-shadow: 0 4px 12px rgba(0, 0, 0, $intensity);
 }
 
-// Mixin for rounded corners
 @mixin rounded-corners($radius: 0.75rem) {
     border-radius: $radius;
 }
 
-// Fonts
 .lobster-font {
     font-family: 'Lobster', cursive;
 }
@@ -33,7 +28,6 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
-// Background Image
 .background-image {
     background-image: url($background-image-url);
     background-size: cover;
@@ -45,17 +39,12 @@ body {
     @include shadow(0.2);
 }
 
-// Títulos con sombra y colores ajustados
 .titulo {
     color: $titulo-color;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-// Secciones específicas para los títulos mencionados
-.titulo-clima-ubicacion,
-.titulo-buscar-clima,
-.titulo-bienvenida,
-.titulo-explora {
+.titulo-secundario {
     color: $secondary-color;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
@@ -70,13 +59,12 @@ body {
     }
 }
 
-// Card for search and location sections
 .search-section,
 .location-section {
     max-width: 500px;
     padding: 2rem;
     margin-top: 2rem;
-    background-color: color.adjust($primary-color, $lightness: -10%); 
+    background-color: color.adjust($primary-color, $lightness: -10%);
     @include rounded-corners();
     @include shadow();
 
